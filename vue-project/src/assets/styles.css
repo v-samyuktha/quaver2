@@ -1,0 +1,173 @@
+#app {
+    width: 100%;
+    height:100%;
+    margin: 0 auto;
+    background-color: #ffffff;
+  }
+
+  a,
+.green {
+  text-decoration: none;
+  color: hsla(160, 100%, 37%, 1);
+  padding: 3px;
+}
+
+.red {
+  text-decoration: none;
+  color: rgb(189, 0, 0);
+  padding: 3px;
+}
+
+h1{
+    font-weight: 900;
+    text-align: center;
+}
+
+h2{
+    font-weight: 1000;
+    font-style: bold;
+    font-size: xx-large;
+}
+
+hr{
+    border: 2px solid black;
+}
+
+body {
+    display:flex;
+    margin: auto;
+    text-align: center;
+    font-family: Calibri, Helvetica, sans-serif; 
+    overflow: auto;
+    font-size: xx-large;
+}
+
+.nav{
+position: fixed;
+top: 0px;
+}
+.navbar {
+background-color: #000000;
+}
+
+.navbar-brand,
+.navbar-nav .nav-link,
+.dropdown-toggle {
+color: white !important;
+}
+
+nav > div > ul > li > a> img{
+max-height: 5vh;
+}
+.dropdown-menu a {
+color: black;
+}
+
+.form-inline input,
+.form-inline button {
+color: white !important;
+}
+
+.card-container{
+overflow-x:scroll;
+}
+
+.card {
+flex: 0 0 18%; /* Set the fixed width for each card */
+margin-right: 1%;
+margin-left: 1%;
+width: 25%  ;  
+height: 400px;
+}
+
+.arrow-buttons {
+display: flex;
+justify-content: center;
+}
+
+.arrow-buttons button {
+margin: 0 1px;
+}
+
+/* width */
+::-webkit-scrollbar {
+width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+background: #888888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+background: #555;
+}
+
+strong{
+font-size: xx-large;
+}
+.card{
+align-items: center;
+justify-content: center;
+height: fit-content;
+background: rgb(31, 29, 29);
+color: #f1f1f1;
+}
+.card-body{
+padding: 1%;
+width: 100%;
+display: flexbox;
+}
+.card-footer{
+padding: 2%;
+width: 100%;
+}
+.card-body > img{
+height: 30vh;
+width: 30vh;
+padding-top: 2%;
+}
+.card-body > audio{
+height: 5vh;
+width: inherit;
+padding: 0%;
+}
+.star-container {
+display: inline-block;
+position: relative;
+cursor: pointer;
+}
+
+.bi-star {
+transition: fill 0.5s;
+fill: gold;
+}
+
+.star-container:hover .bi-star {
+fill: rgb(255, 149, 0);
+  stroke: rgb(255, 149, 0);
+  stroke-width: 0.5px;
+}
+
+label {
+cursor: pointer;
+display: inline-block;
+}
+
+.login-card{
+    align-items: center;
+    justify-content: center;
+    height: fit-content;
+    width: fit-content;
+}
+
+.logo {
+    width: 60px; 
+    height: 40px;
+  }
