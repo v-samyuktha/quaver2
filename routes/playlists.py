@@ -85,5 +85,19 @@ class PlaylistAPI(Resource):
             print(f"Removed song {song_id} from playlist {playlist_id}")
             return make_response(jsonify({"message":f"Removed song {song_id} from playlist {playlist_id}"}), 200)
 
-        else:
+        elif len(request.args.keys())>1:
             return make_response(jsonify({"message":"Invalid query string."}), 400)
+        
+        else:
+            data = request.get_json()['params']
+
+            if "title" in data.keys():
+                playlist.title = data["title"]
+                print("Title update")
+
+            if "desc" in data.keys():
+                playlist.description = data["desc"]
+                print("Description update")
+
+            db.session.commit()
+            return make_response(jsonify({"message":"Playlist updated successfully!"}), 200)

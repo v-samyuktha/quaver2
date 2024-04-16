@@ -8,15 +8,25 @@ let username = localStorage.getItem("username");
     <div class="container">
         <h3 class="green">{{ username }}'s profile</h3>
     </div>
-    <div class="container">
-        <div class="col">
-            <div class="row">
-                Joined on: {{ joined_on }}
+    <div class="grid stat-grid">
+        <hr>
+        <div class="row stat-head-row">
+            <div class="col stat-heading">
+                Joined on: 
             </div>
-            <div class="row">
-                Playlists created:  {{ no_of_playlists }}
+            <div class="col stat-heading">
+                Playlists created:  
             </div>
         </div>
+        <div class="row stat-head-row">
+            <div class="col stat-value1">
+                {{ joined_on }}
+            </div>
+            <div class="col stat-value1">
+                {{ no_of_playlists }}
+            </div>
+        </div>
+        <hr>
     </div>
     <div class="container" v-if="notCreator">
         <RouterLink to="/register_creator" class="btn btn-outline-success">Register as Creator</RouterLink>
@@ -26,14 +36,6 @@ let username = localStorage.getItem("username");
     </div>
 </template>
 
-<style>
-    .container{
-        display:flex;
-        margin-top: 2%;
-        width: 80%;
-        justify-content: center;
-    }
-</style>
 <script>
 import axios from 'axios';
 const API_BASE_URL = 'http://127.0.0.1:5000/api';
@@ -74,3 +76,42 @@ export default {
     }
 }
 </script>
+
+<style>
+    .container{
+        display:flex;
+        margin-top: 2%;
+        width: 80%;
+        justify-content: center;
+    }
+    .stat-heading{
+        font-size: large;
+        font-weight: 700;
+    }
+    .stat-head-row{
+        margin-bottom: 0% !important;
+    }
+    .stat-grid {
+        background-color: rgba(148, 207, 215, 0.192);
+        max-width: 60%;
+        position: relative;
+        left: 20%;
+        display: grid;
+        justify-items: stretch;
+        justify-content: center;
+        place-content: normal;
+        margin-top: 2%;
+    }
+    hr{
+        border-width: 3px;
+        width: inherit;
+        margin: 0%;
+    }
+    .stat-grid>.row{
+        height: 50px;
+    }
+    .stat-value1{
+        color: hsla(160, 100%, 37%, 1);
+        font-size: 30px;
+    }
+</style>

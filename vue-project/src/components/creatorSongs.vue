@@ -31,7 +31,7 @@
                         </div>
                     <div class="card-footer">
                         <button class="btn btn-outline-success" @click="playSong(song.song_id)">View</button>
-                        <button class="btn btn-outline-dark">Edit</button>
+                        <button class="btn btn-outline-dark" @click="editSong(song.song_id)">Edit</button>
                         <button class="btn btn-outline-danger" @click="deleteSong(song.song_id)">Delete</button>
                     </div>
             </div>
@@ -93,6 +93,10 @@ export default {
         },
         playSong(song_id){
             this.$router.push(`/songs/${song_id}`)
+        },
+        editSong(song_id){
+            console.log(`Editing song ${song_id}`)
+            this.$router.push(`/edit_song/${song_id}`)
         }
     }
 }

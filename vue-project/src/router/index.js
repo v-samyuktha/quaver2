@@ -18,6 +18,7 @@ import newAlbum from '../views/newAlbum.vue'
 import viewAlbum from '../views/viewAlbum.vue'
 import viewSong from '../views/viewSong.vue'
 import addToPlaylist from '../views/addToPlaylist.vue'
+import editSong from '../views/editSong.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -120,6 +121,11 @@ const router = createRouter({
       path: '/add_to_playlist',
       name: 'addToPlaylist',
       component: addToPlaylist
+    },
+    {
+      path: '/edit_song/:song_id',
+      name: editSong,
+      component: editSong
     }
   ]
 })

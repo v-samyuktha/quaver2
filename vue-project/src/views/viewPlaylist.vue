@@ -6,9 +6,26 @@ let uname = localStorage.getItem("username");
 <template>
     <userNav />
     <div v-if="songs" class="heading">
-        <h3 class="green">{{ title }}</h3>
+        <h3 class="green">
+            {{ title }}
+            <button class="btn btn-sm" style="border: 0px; padding: 0px; margin-bottom: 8px;" @click="editTitle()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                    <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z"/>
+                </svg>
+            </button>
+        </h3>
+        
         <h4>Playlist by {{ uname }}</h4>
-        <h5 v-if="desc"> {{ desc }}</h5>
+        <h5 v-if="desc"> {{ desc }}
+            <button class="btn btn-sm" style="border: 0px; padding: 0px; margin-bottom: 8px;" @click="editDesc()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                    <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z"/>
+                </svg>
+            </button>
+        </h5>
+        <button class="btn btn-outline-success btn-sm" v-else @click="addDesc()" style="margin-top: 2%;">
+            Add Description
+        </button>
     </div>
     <div v-if="songs" class="container d-flex" style="justify-content: center; margin-bottom: 2%;">
         <div class="arrow-buttons">
@@ -170,6 +187,47 @@ export default {
         },
         goToPlaylists(){
             this.$router.push("/playlists")
+        },
+        editTitle(){
+            let new_title = prompt("Enter the new title:")
+            if (new_title.trim()!=''){
+                axios.put(`${API_BASE_URL}/playlists/${this.$route.params.playlist_id}`, {
+                    headers: {
+                    Authorization: `${this.authToken}`
+                    },
+                params: {
+                    "title": new_title
+                    }
+                })
+            }
+            else{
+                alert("Title cannot be empty!")
+            }
+        },
+        editDesc(){
+            let new_desc = prompt("Enter the new description:")
+
+            axios.put(`${API_BASE_URL}/playlists/${this.$route.params.playlist_id}`, {
+                headers: {
+                Authorization: `${this.authToken}`
+                },
+            params: {
+                "desc": new_desc
+                }
+            })
+        },
+        addDesc(){
+            let new_desc = prompt("Add a description:")
+            if (new_desc!=null){
+                axios.put(`${API_BASE_URL}/playlists/${this.$route.params.playlist_id}`, {
+                    headers: {
+                    Authorization: `${this.authToken}`
+                    },
+                params: {
+                    "desc": new_desc
+                    }
+                })
+            }
         }
     }
 }
@@ -202,5 +260,8 @@ export default {
     h5{
         font-size: x-large;
         font-style: italic ;
+    }
+    .bi-pen:hover{
+        cursor: pointer;
     }
 </style>

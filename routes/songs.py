@@ -72,41 +72,66 @@ class SongAPI(Resource):
         return make_response(jsonify(song.search()), 200)
     
     def put(self, song_id):
-        data = request.get_json()['params']
-        if "rating" in data.keys():
-            song = Song.query.filter_by(song_id=song_id).first()
-            if song.rating is None:
-                song.rating = data["rating"]
-                song.no_users_rated = 1
-            else:
-                song.rating= (song.no_users_rated*song.rating + int(data["rating"]))*1.0/(song.no_users_rated+1)
-                song.rating = round(song.rating, 2)
-                song.no_users_rated += 1
-            print("Updated rating")
-        elif "flag" in data.keys():
-            song = Song.query.filter_by(song_id=song_id).first()
-            if data["flag"]=="true":
-                song.flag="true"
-            elif data["flag"]=="false":
-                song.flag="false"
-            else:
-                return make_response(jsonify({"message":"Invalid request params"}))
-            db.session.commit()
-            print(f"Updated flag for song {song_id}")
+        if "multipart" not in request.headers['content-type']:
+            data = request.get_json()['params']
+            if "rating" in data.keys():
+                song = Song.query.filter_by(song_id=song_id).first()
+                if song.rating is None:
+                    song.rating = data["rating"]
+                    song.no_users_rated = 1
+                else:
+                    song.rating= (song.no_users_rated*song.rating + int(data["rating"]))*1.0/(song.no_users_rated+1)
+                    song.rating = round(song.rating, 2)
+                    song.no_users_rated += 1
+                db.session.commit()
+                print("Updated rating")
+            elif "flag" in data.keys():
+                song = Song.query.filter_by(song_id=song_id).first()
+                if data["flag"]=="true":
+                    song.flag="true"
+                elif data["flag"]=="false":
+                    song.flag="false"
+                else:
+                    return make_response(jsonify({"message":"Invalid request params"}))
+                db.session.commit()
+                print(f"Updated flag for song {song_id}")
+        #The actual song edit case
         else:
-            data = request.get_json()
             song = Song.query.filter_by(song_id=song_id).first()
             if not song:
                 return make_response(jsonify({"message":"Song not found."}), 400)
-            new_title = data.get("title")
-            new_genre = data.get("genre")
-            if new_title is not None:
-                song.title=new_title
-            if new_genre is not None:
-                song.genre=new_genre
-        db.session.commit()
-        print(f'Updated song {song_id}')
-        return make_response(jsonify({"message":"Song updated successfully!"}), 200)
+            
+            print(request.form.keys())
+            song.title = request.form['title']
+            song.genre = request.form['genre']
+            if request.files:
+                if 'lyrics' in request.files:
+                    print("Recieved new lyrics")
+                    lyrics_file = request.files['lyrics']
+
+                    #delete the old file if present
+                    if os.path.exists(f'vue-project/src/assets/lyrics/{song_id}.txt'):
+                        print("Removed old lyrics")
+                        os.remove(f'vue-project/src/assets/lyrics/{song_id}.txt')
+
+                    #save new file
+                    lyrics_file.save(os.path.join('vue-project/src/assets','lyrics', str(song.song_id)+".txt"))
+                    
+                if 'audio' in request.files:
+                    print("Recieved new audio")
+                    audio_file = request.files['audio']
+
+                    #delete the old file if present
+                    if os.path.exists(f'vue-project/src/assets/audio/{song_id}.mp3'):
+                        print("Removed old audio")
+                        os.remove(f'vue-project/src/assets/audio/{song_id}.mp3')
+                    
+                    #save new file
+                    audio_file.save(os.path.join('vue-project/src/assets','audio', str(song.song_id)+".mp3"))
+                   
+            db.session.commit()
+            print(f'Updated song {song_id}')
+            return make_response(jsonify({"message":"Song updated successfully!"}), 200)
 
     def delete(self, song_id):
         song = Song.query.filter_by(song_id=song_id).first()

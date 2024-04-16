@@ -107,7 +107,7 @@ class Artist(db.Model):
                     "artist_id": self.artist_id,
                     "name": self.name,
                     "bio": self.bio,
-                    "username": self.username
+                    "username": self.username,
                 }
     
 class PlaylistSong(db.Model):
@@ -165,6 +165,8 @@ class Album(db.Model):
         song_ids = []
         for song in songs:
             song_ids.append(song.song_id)
+
+        artist = Artist.query.filter_by(artist_id = self.artist_id).first()
         return {
             "album_id": self.album_id,
             "title": self.title,
@@ -175,5 +177,6 @@ class Album(db.Model):
             "rating": self.rating,
             "no_users_rated": self.no_users_rated,
             "flag": self.flag,
-            "song_ids": song_ids
+            "song_ids": song_ids,
+            "artist_name": artist.name
         }
