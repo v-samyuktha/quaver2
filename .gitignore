@@ -1,0 +1,7 @@
+/.vscode
+/.venv
+/__pycache__
+/application/__pycache__
+/instance/quaver2_db.sqlite3
+/routes/__pycache__
+/vue-project/.vscode
