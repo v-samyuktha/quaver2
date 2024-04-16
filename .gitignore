@@ -5,3 +5,5 @@
 /instance/quaver2_db.sqlite3
 /routes/__pycache__
 /vue-project/.vscode
+/vue-project/src/assets/audio
+/vue-project/src/assets/lyrics

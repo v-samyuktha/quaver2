@@ -72,6 +72,10 @@ export default {
                 localStorage.setItem('authToken', response.data.auth_token);
                 localStorage.setItem('userId', response.data.id);
 
+                //Need for new album
+                localStorage.setItem('song_ids', []);
+                localStorage.setItem('song_titles', []);
+
                 this.$router.push(response.data.roles.includes('admin') ? '/dashboard' : '/home')
             })
             .catch(error => {

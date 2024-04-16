@@ -1,6 +1,6 @@
 <template>
     <div class="container col-md-4 col-md-offset-4" style="margin-top: 2%;">
-        <form enctype="multipart/form-data">
+        <form enctype="multipart/form-data" @submit.prevent="newSong()">
             <div class="form-group required">
                 <label class="control-label" aria-required="true">Title: </label>   
                 <input type="text" class="form-control" placeholder="Enter Title" id="title" name="title" required>
@@ -13,7 +13,7 @@
             <br>
             <div class="form-group required">
                 <label class="control-label">Upload audio</label>  
-                <input type="file" class="form-control" accept=".mp3" id="audio" name="audio">  
+                <input type="file" class="form-control" accept=".mp3" id="audio" name="audio" required>  
             </div>
             <br>
             <div class="form-group">
@@ -22,7 +22,7 @@
             </div>
         <br>
         <div class="row">
-            <button class="button btn btn-outline-success" id="create" @click="newSong()">Add to Album</button>
+            <button class="button btn btn-outline-success" id="create">Add to Album</button>
         </div>
         </form>
     </div>
@@ -57,11 +57,46 @@ export default {
             axios.post(`${API_BASE_URL}/songs`, formData)
             .then(response => {
                 console.log(response.data);
-                this.$parent.songs+=1;
+                this.$parent.atleastOneSong=true;
+                console.log(`Atleast one song: ${this.$parent.atleastOneSong}`)
+
+                let songs = null;
+            axios.get(`${API_BASE_URL}/songs`)
+            .then(response=>{
+                console.log(response.data)
+                songs = response.data[response.data.length-1].song_id;
+                console.log(`New song id: ${parseInt(songs)}`)
+
+                let temp1 = localStorage.getItem('song_ids');
+            //Handles empty array case
+            temp1 = (temp1) ? JSON.parse(temp1) : [];
+            console.log(songs)
+            temp1.push(parseInt(songs));
+            console.log("temp1: ", temp1);
+            localStorage.setItem('song_ids', JSON.stringify(temp1));
+
+            let temp2 = localStorage.getItem('song_titles');
+            temp2 = (temp2) ? JSON.parse(temp2) : [];
+            temp2.push(document.getElementById("title").value);
+            console.log("temp2: ", temp2);
+            localStorage.setItem('song_titles', JSON.stringify(temp2));
+
+            //Alert success
+            alert(`Added ${document.getElementById("title").value} to album!`)
+
+            //Clear the fields
+            document.getElementById("title").value = '';
+            document.getElementById("genre").value = '';
+            document.getElementById("audio").value = null;
+            document.getElementById("lyrics").value = null;
+
+            })
             })
             .catch(error => {
                 console.error("Error uploading song: ", error)
-            })}
+            })
+
+        }
         }
 };
 </script>
