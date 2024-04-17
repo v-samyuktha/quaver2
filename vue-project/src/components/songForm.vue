@@ -33,6 +33,11 @@ import axios from 'axios';
 const API_BASE_URL = 'http://localhost:5000/api';
 
 export default {
+    data(){
+        return{
+            authToken: ''
+        }
+    },
     created() {
         this.authToken = localStorage.getItem('authToken');
         if (this.authToken) {
@@ -54,14 +59,22 @@ export default {
             formData.append('audio', audioFile);
             formData.append('lyrics', lyricsFile);
             formData.append('artistId', artistId)
-            axios.post(`${API_BASE_URL}/songs`, formData)
+            axios.post(`${API_BASE_URL}/songs`, formData, {
+                headers: {
+                    Authorization: `${this.authToken}`
+                }
+            })
             .then(response => {
                 console.log(response.data);
                 this.$parent.atleastOneSong=true;
                 console.log(`Atleast one song: ${this.$parent.atleastOneSong}`)
 
                 let songs = null;
-            axios.get(`${API_BASE_URL}/songs`)
+            axios.get(`${API_BASE_URL}/songs`, {
+                headers: {
+                    Authorization: `${this.authToken}`
+                }
+            })
             .then(response=>{
                 console.log(response.data)
                 songs = response.data[response.data.length-1].song_id;

@@ -39,7 +39,8 @@ export default {
         return {
             playlists: null,
             flashMessage: null,
-            path: ''
+            path: '',
+            authToken: ''
         };
     },
     created() {

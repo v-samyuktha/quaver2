@@ -94,7 +94,8 @@ export default {
             desc: null,
             artistName: '',
             artistId: '',
-            rating: null
+            rating: null,
+            authToken: ''
         };
     },
     created() {
@@ -130,7 +131,11 @@ export default {
                     .then(response => this.songs.push(response.data))
                 });
                 
-                axios.get(`${API_BASE_URL}/artists?artistId=${this.artistId}`)
+                axios.get(`${API_BASE_URL}/artists?artistId=${this.artistId}`,{
+                    headers: {
+                        Authorization: `${this.authToken}`
+                    }
+                })
                 .then(response=>{
                     this.artistName = response.data.name;
                 })

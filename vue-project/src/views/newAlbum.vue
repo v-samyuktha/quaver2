@@ -126,7 +126,11 @@ export default {
             else{
             let song_ids = JSON.parse(localStorage.getItem("song_ids"))
             song_ids.forEach(song_id => {
-                axios.delete(`${API_BASE_URL}/songs/${song_id}`)
+                axios.delete(`${API_BASE_URL}/songs/${song_id}`,{
+                    headers: {
+                    Authorization: `${this.authToken}`
+                }
+                })
                 .then(response=>{
                     console.log(response);
                     //Reset localStorage

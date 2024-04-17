@@ -1,12 +1,14 @@
 from flask import jsonify, request, make_response
 from application.models import *
-from application.security_framework import user_datastore, bcrypt, current_user, login_user, logout_user, roles_accepted
+from application.security_framework import user_datastore, bcrypt, current_user, login_user, logout_user, roles_accepted, auth_token_required
 from flask_restful import Resource
 from datetime import datetime, date, timedelta
 import matplotlib
 import matplotlib.pyplot as plt
 
 class GraphsAPI(Resource):
+    @roles_accepted('admin')
+    @auth_token_required
     def get(self):
         matplotlib.use("agg")
         #Graph: Timeline for total accounts

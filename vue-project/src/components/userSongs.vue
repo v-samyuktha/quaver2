@@ -52,7 +52,8 @@ export default {
         return {
             songs: null,
             flashMessage: null,
-            path: ''
+            path: '',
+            authToken: ''
         };
     },
     created() {

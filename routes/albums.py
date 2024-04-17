@@ -1,11 +1,13 @@
 from flask import jsonify, request, make_response
 from application.models import *
-from application.security_framework import user_datastore, bcrypt, current_user, login_user, logout_user, roles_accepted
+from application.security_framework import user_datastore, bcrypt, current_user, login_user, logout_user, roles_accepted, auth_token_required
 from flask_restful import Resource
 from datetime import date
 import requests
 
 class AlbumsAPI(Resource):
+
+    @roles_accepted('user', 'creator', 'admin')
     def get(self):
         if request.args.get("by"):
             albums=[]
@@ -36,6 +38,8 @@ class AlbumsAPI(Resource):
                     albums.append(album)
             return make_response(jsonify([album.search() for album in albums]), 200)
     
+    @roles_accepted('creator')
+    @auth_token_required
     def post(self):
         print(request.get_json()['params'])
         data = request.get_json()['params']
@@ -63,12 +67,16 @@ class AlbumsAPI(Resource):
         return make_response(jsonify({"message": "Album has been added successfully!"}), 200)
 
 class AlbumAPI(Resource):
+
+    @roles_accepted('user', 'creator', 'admin')
     def get(self, album_id):
         album = Album.query.filter_by(album_id=album_id).first()
         if not album:
             return make_response(jsonify({"message":"Album not found."}), 400)
         return make_response(jsonify(album.search()), 200)
     
+    @roles_accepted('user', 'creator', 'admin')
+    @auth_token_required
     def put(self, album_id):
         data = request.get_json()['params']
         if "rating" in data.keys():
@@ -106,6 +114,8 @@ class AlbumAPI(Resource):
         print(f'Updated album {album_id}')
         return make_response(jsonify({"message":"Album updated successfully!"}), 200)
     
+    @roles_accepted('creator')
+    @auth_token_required
     def delete(self, album_id):
         album = Album.query.filter_by(album_id=album_id).first()
         if not album:

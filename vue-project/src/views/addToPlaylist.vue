@@ -27,7 +27,8 @@ export default {
             song_id:'',
             song: null,
             playlists: null,
-            selected_id: null
+            selected_id: null,
+            authToken: ''
         };
     },
     created() {

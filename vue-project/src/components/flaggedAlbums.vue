@@ -53,7 +53,8 @@
                 albums: null,
                 flashMessage: null,
                 path: '',
-                artistName: ''
+                artistName: '',
+                authToken: ''
             };
         },
         created() {
@@ -91,7 +92,11 @@
                 })
                 .then(response=>{
                     console.log(response.data.message);
-                    axios.get(`${API_BASE_URL}/albums/${album_id}`)
+                    axios.get(`${API_BASE_URL}/albums/${album_id}`,{
+                        headers: {
+                            Authorization: `${this.authToken}`
+                        }
+                    })
                     .then(response=>{
                         this.song_ids = response.data.song_ids;
                         this.song_ids.forEach(element => {
@@ -104,7 +109,11 @@
                 })
             },
             getArtistName(artist_id){
-            axios.get(`${API_BASE_URL}/artists?artistId=${artist_id}`)
+            axios.get(`${API_BASE_URL}/artists?artistId=${artist_id}`, {
+                headers: {
+                    Authorization: `${this.authToken}`
+                }
+            })
                 .then(response=>{
                     this.artistName = response.data.name;
                 })

@@ -22,7 +22,7 @@ app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///./quaver2_db.sqlite3'
 app.config['SECRET_KEY']='your-secret-key'
 app.config['SECURITY_PASSWORD_HASH']='bcrypt'
 app.config['SECURITY_PASSWORD_SALT']=secrets.SystemRandom().getrandbits(128)
-# app.config['SECURITY_TOKEN_AUTHENTICATION_HEADER'] = 'Authorization'
+app.config['SECURITY_TOKEN_AUTHENTICATION_HEADER'] = 'Authorization'
 
 #flask-mail config
 app.config['MAIL_SERVER'] ='localhost'

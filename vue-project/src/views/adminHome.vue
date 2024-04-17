@@ -74,31 +74,51 @@ export default {
     },
     methods:{
         getStats(){
-            axios.get(`${API_BASE_URL}/users?role=creator`)
+            axios.get(`${API_BASE_URL}/users?role=creator`, {
+                headers: {
+                    Authorization: `${this.authToken}`
+                }
+            })
             .then(response=>{
                 this.creators = response.data;
                 console.log(`${this.creators.length} creators found`);
             })
             .catch(error=>console.error(error))
 
-            axios.get(`${API_BASE_URL}/users?role=user`)
+            axios.get(`${API_BASE_URL}/users?role=user`, {
+                headers: {
+                    Authorization: `${this.authToken}`
+                }
+            })
             .then(response=>{
                 this.regulars = response.data;
                 console.log(`${this.regulars.length} users found`);
             })
             .catch(error=>console.error(error))
 
-            axios.get(`${API_BASE_URL}/songs`)
+            axios.get(`${API_BASE_URL}/songs`, {
+                headers: {
+                    Authorization: `${this.authToken}`
+                }
+            })
             .then(response=>{
                 this.stats["total_songs"]=response.data.length;
             })
-            axios.get(`${API_BASE_URL}/albums`)
+            axios.get(`${API_BASE_URL}/albums`, {
+                headers: {
+                    Authorization: `${this.authToken}`
+                }
+            })
             .then(response=>{
                 this.stats["total_albums"]=response.data.length;
             })
         },
         setGraphs(){
-            axios.get(`${API_BASE_URL}/graphs`)
+            axios.get(`${API_BASE_URL}/graphs`, {
+                headers: {
+                    Authorization: `${this.authToken}`
+                }
+            })
             .then(response=>{
                 console.log(response.data.message);
             })

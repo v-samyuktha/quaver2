@@ -133,20 +133,30 @@ const API_BASE_URL = 'http://127.0.0.1:5000/api';
                 userRole: false,
                 songs: null,
                 albums: null,
-                playlists: null
+                playlists: null,
+                authToken: ''
             };
         },
         created() {
-                this.key = this.$route.query["key"];
+        this.authToken = localStorage.getItem('authToken');
+        if (this.authToken) {
+            this.key = this.$route.query["key"];
                 if(localStorage.getItem("userRole"))
                     this.userRole=true;
                 this.getSongs();
                 this.getAlbums();
                 this.getPlaylists();
+        } else {
+            this.$router.push('/login');
+        }
         },
         methods: {
             getSongs(){
-                axios.get(`${API_BASE_URL}/songs?key=${this.key}`)
+                axios.get(`${API_BASE_URL}/songs?key=${this.key}`,{
+                    headers: {
+                    Authorization: `${this.authToken}`
+                }
+                })
                 .then(response=>{
                     this.songs = response.data;
                     console.log(this.songs.length)
@@ -154,7 +164,11 @@ const API_BASE_URL = 'http://127.0.0.1:5000/api';
                 .catch(error=>console.error(error))
             },
             getAlbums(){
-                axios.get(`${API_BASE_URL}/albums?key=${this.key}`)
+                axios.get(`${API_BASE_URL}/albums?key=${this.key}`,{
+                    headers: {
+                        Authorization: `${this.authToken}`
+                    }
+                })
                 .then(response=>{
                     this.albums = response.data;
                     console.log(this.albums.length)

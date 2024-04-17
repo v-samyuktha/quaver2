@@ -75,7 +75,11 @@ export default {
     methods: {
         getSong(){
             console.log(`Song id: ${this.$route.params.song_id}`)
-            axios.get(`${API_BASE_URL}/songs/${this.$route.params.song_id}`)
+            axios.get(`${API_BASE_URL}/songs/${this.$route.params.song_id}`,{
+                headers: {
+                    Authorization: `${this.authToken}`
+                }
+            })
             .then(response=>{
                 console.log(response.data)
                 this.song = response.data;
@@ -102,7 +106,11 @@ export default {
             for (var pair of formData.entries()) {
                 console.log(pair[0] + ', ' + pair[1]);
             }
-            axios.put(`${API_BASE_URL}/songs/${this.$route.params.song_id}`, formData)
+            axios.put(`${API_BASE_URL}/songs/${this.$route.params.song_id}`, formData, {
+                headers: {
+                    Authorization: `${this.authToken}`
+                }
+            })
             .then(response => {
                 console.log(response.data)
                 this.$router.push("/creator_home")

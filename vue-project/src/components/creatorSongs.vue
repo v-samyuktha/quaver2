@@ -54,7 +54,8 @@ export default {
         return {
             songs: null,
             flashMessage: null,
-            path: ''
+            path: '',
+            authToken: ''
         };
     },
     created() {
@@ -83,7 +84,11 @@ export default {
         deleteSong(song_id) {
             console.log(`Deleting song ${song_id}`);
             if(confirm("Are you sure of deleting this song?")==true){
-                axios.delete(`${API_BASE_URL}/songs/${song_id}`)
+                axios.delete(`${API_BASE_URL}/songs/${song_id}`,{
+                    headers: {
+                    Authorization: `${this.authToken}`
+                }
+                })
                 .then(response=>{
                     console.log(response);
                     window.location.reload();

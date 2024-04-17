@@ -46,6 +46,7 @@ export default {
         return {
             songId: null,
             song: null,
+            authToken: ''
         };
     },
     created() {
@@ -60,7 +61,11 @@ export default {
     methods: {
         getSong() {
             this.songId=this.$route.params.song_id;
-            axios.get(`${API_BASE_URL}/songs/${this.songId}`)
+            axios.get(`${API_BASE_URL}/songs/${this.songId}`, {
+                headers: {
+                        Authorization: `${this.authToken}`
+                    }
+            })
             .then(response=>{
                 this.song=response.data;
                 this.playSong();

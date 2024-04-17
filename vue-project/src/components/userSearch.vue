@@ -38,10 +38,19 @@
 export default {
     data(){
         return {
-            search_phrase: null
+            search_phrase: null,
+            authToken: ''
         };
     },
-
+    created(){
+        this.authToken = localStorage.getItem("authToken");
+        if (this.authToken) {
+            ;
+        }
+        else {
+            this.$router.push('/login')
+        }
+    },
     methods: {
         search(){
             let temp = document.getElementById("search_text")

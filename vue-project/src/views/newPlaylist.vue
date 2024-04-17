@@ -71,7 +71,8 @@ export default {
             song_list: null,
             flashMessage: '',
             path: '',
-            selected_id: null
+            selected_id: null,
+            authToken: ''
         };
     },
     created() {

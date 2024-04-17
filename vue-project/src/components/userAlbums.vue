@@ -52,7 +52,8 @@ export default {
             albums: null,
             flashMessage: null,
             path: '',
-            artistName:''
+            artistName:'',
+            authToken: ''
         };
     },
     created() {
@@ -82,7 +83,11 @@ export default {
             this.$router.push(`/albums/${album_id}`)
         },
         getArtistName(artist_id){
-            axios.get(`${API_BASE_URL}/artists?artistId=${artist_id}`)
+            axios.get(`${API_BASE_URL}/artists?artistId=${artist_id}`, {
+                headers: {
+                    Authorization: `${this.authToken}`
+                }
+            })
                 .then(response=>{
                     this.artistName = response.data.name;
                 })

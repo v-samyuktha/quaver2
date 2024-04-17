@@ -54,7 +54,8 @@ export default {
         return {
             albums: null,
             flashMessage: null,
-            path: ''
+            path: '',
+            authToken: ''
         };
     },
     created() {
@@ -82,7 +83,11 @@ export default {
         },
         deleteAlbum(album_id) {
             console.log(`Deleting album ${album_id}`);
-            axios.delete(`${API_BASE_URL}/albums/${album_id}`)
+            axios.delete(`${API_BASE_URL}/albums/${album_id}`, {
+                headers: {
+                    Authorization: `${this.authToken}`
+                }
+            })
             .then(response=>{
                 console.log(response);
                 window.location.reload();

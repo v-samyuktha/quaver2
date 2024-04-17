@@ -99,7 +99,8 @@ export default {
             title: '',
             flashMessage: null,
             path: '',
-            desc: null
+            desc: null,
+            authToken: ''
         };
     },
     created() {

@@ -1,11 +1,12 @@
 from flask import jsonify, request, make_response
 from application.models import *
-from application.security_framework import user_datastore, bcrypt, current_user, login_user, logout_user, roles_accepted
+from application.security_framework import user_datastore, bcrypt, current_user, login_user, logout_user, roles_accepted, auth_token_required
 from flask_restful import Resource
 from datetime import date
 import os
 
 class SongsAPI(Resource):
+    @roles_accepted('user', 'creator', 'admin')
     def get(self):
         if request.args.get("by"):
             songs=[]
@@ -36,6 +37,9 @@ class SongsAPI(Resource):
                 if song.flag=="false":
                     songs.append(song)
             return make_response(jsonify([song.search() for song in songs]), 200)
+        
+    @roles_accepted('creator')
+    @auth_token_required
     def post(self):
         print(request.form.keys())
         title = request.form['title']
@@ -65,12 +69,15 @@ class SongsAPI(Resource):
         return make_response(jsonify({"message": "Song has been added successfully!"}), 200)
     
 class SongAPI(Resource):
+    @roles_accepted('user', 'creator', 'admin')
     def get(self, song_id):
         song = Song.query.filter_by(song_id=song_id).first()
         if (not song) or (song.flag=="true"):
             return make_response(jsonify({"message":"Song not found."}), 400)
         return make_response(jsonify(song.search()), 200)
     
+    @roles_accepted('user', 'creator', 'admin')
+    @auth_token_required
     def put(self, song_id):
         if "multipart" not in request.headers['content-type']:
             data = request.get_json()['params']
@@ -133,6 +140,8 @@ class SongAPI(Resource):
             print(f'Updated song {song_id}')
             return make_response(jsonify({"message":"Song updated successfully!"}), 200)
 
+    @roles_accepted('creator')
+    @auth_token_required
     def delete(self, song_id):
         song = Song.query.filter_by(song_id=song_id).first()
         if not song:

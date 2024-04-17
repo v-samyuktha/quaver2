@@ -33,10 +33,18 @@ export default {
         return {
             username:'',
             name: '',
-            id: ''
+            id: '',
+            authToken: ''
         };
     },
-
+    created() {
+        this.authToken = localStorage.getItem('authToken');
+        if (this.authToken) {
+            ;
+        } else {
+            this.$router.push('/login');
+        }
+    },
     methods: {
         registerCreator(){
             this.name = document.getElementById("name").value
@@ -46,6 +54,10 @@ export default {
                 name: this.name,
                 username: this.username ,
                 id: this.id
+            }, {
+                headers: {
+                    Authorization: `${this.authToken}`
+                }
             })
             .then(response => {
                 console.log(response.data.message);

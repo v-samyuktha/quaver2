@@ -45,7 +45,8 @@ export default {
         return {
             joined_on: null,
             no_of_playlists: null,
-            notCreator: true
+            notCreator: true,
+            authToken: ''
         };
     },
     created() {
@@ -60,11 +61,19 @@ export default {
     },
     methods: {
         setStats() {
-            axios.get(`${API_BASE_URL}/users/${localStorage.getItem('userId')}`)
+            axios.get(`${API_BASE_URL}/users/${localStorage.getItem('userId')}`, {
+                headers: {
+                    Authorization: `${this.authToken}`
+                }
+            })
             .then(response=>this.joined_on=response.data.joined_on)
             .catch(error=>console.error(error))
 
-            axios.get(`${API_BASE_URL}/playlists?userId=${localStorage.getItem('userId')}`)
+            axios.get(`${API_BASE_URL}/playlists?userId=${localStorage.getItem('userId')}`,{
+                headers: {
+                    Authorization: `${this.authToken}`
+                }
+            })
             .then(response=>this.no_of_playlists=response.data.length)
             .catch(error=>console.error(error))
         },

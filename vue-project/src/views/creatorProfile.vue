@@ -71,7 +71,11 @@ export default {
             this.username = localStorage.getItem("username")
 
             //Song stats
-            axios.get(`${API_BASE_URL}/songs?by=${localStorage.getItem('artistId')}`)
+            axios.get(`${API_BASE_URL}/songs?by=${localStorage.getItem('artistId')}`, {
+                headers: {
+                    Authorization: `${this.authToken}`
+                }
+            })
             .then(response=>{
                 let song_list = response.data
                 this.songs = song_list.length
@@ -93,7 +97,11 @@ export default {
                 console.log(this.songs)
 
                 //Album stats
-                axios.get(`${API_BASE_URL}/albums?by=${localStorage.getItem('artistId')}`)
+                axios.get(`${API_BASE_URL}/albums?by=${localStorage.getItem('artistId')}`, {
+                    headers: {
+                    Authorization: `${this.authToken}`
+                }
+                })
                 .then(response=>{
                     let album_list = response.data
                     this.albums= album_list.length

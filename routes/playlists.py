@@ -1,10 +1,12 @@
 from flask import jsonify, request, make_response
 from application.models import *
-from application.security_framework import user_datastore, bcrypt, current_user, login_user, logout_user, roles_accepted
+from application.security_framework import user_datastore, bcrypt, current_user, login_user, logout_user, roles_accepted, auth_token_required
 from flask_restful import Resource
 from datetime import date
 
 class PlaylistsAPI(Resource):
+    @roles_accepted('user', 'admin')
+    @auth_token_required
     def get(self):
         if request.args.get("key"):
             if request.args.get("userId"):
@@ -26,6 +28,8 @@ class PlaylistsAPI(Resource):
         playlists.reverse()
         return make_response(jsonify([playlist.search() for playlist in playlists]), 200)
     
+    @roles_accepted('user')
+    @auth_token_required
     def post(self):
         data = request.get_json()
         print(data)
@@ -47,12 +51,16 @@ class PlaylistsAPI(Resource):
         return make_response(jsonify({"message":"Successfully created playlist"}), 200)
     
 class PlaylistAPI(Resource):
+    @roles_accepted('user', 'creator', 'admin')
+    @auth_token_required
     def get(self, playlist_id):
         playlist = Playlist.query.filter_by(playlist_id=playlist_id).first()
         if not playlist:
             return make_response(jsonify({"message":"Playlist not found."}), 400)
         return make_response(jsonify(playlist.search()), 200)
     
+    @roles_accepted('user')
+    @auth_token_required
     def delete(self, playlist_id):
         playlist = Playlist.query.filter_by(playlist_id=playlist_id).first()
         if not playlist:
@@ -64,6 +72,8 @@ class PlaylistAPI(Resource):
 
         return make_response(jsonify({"message":"Playlist deleted successfully."}), 200)
     
+    @roles_accepted('user')
+    @auth_token_required
     def put(self,playlist_id):
         playlist = Playlist.query.filter_by(playlist_id=playlist_id).first()
         if not playlist:

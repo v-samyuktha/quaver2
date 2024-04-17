@@ -59,6 +59,11 @@ import axios from 'axios';
 const API_BASE_URL = 'http://localhost:5000/api';
 
 export default {
+    data(){
+        return{
+            authToken: ''
+        }
+    },
     created() {
         this.authToken = localStorage.getItem('authToken');
         if (this.authToken) {
@@ -83,7 +88,11 @@ export default {
                 formData.append('lyrics', lyricsFile);
             }
             
-            axios.post(`${API_BASE_URL}/songs`, formData)
+            axios.post(`${API_BASE_URL}/songs`, formData, {
+                headers: {
+                    Authorization: this.authToken
+                }
+            })
             .then(response => {
                 console.log(response.data)
                 this.$router.push("/creator_home")
