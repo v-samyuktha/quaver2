@@ -1,6 +1,10 @@
 # Quaver
 
-Quaver is a music library and playlist web application built with Flask and Vue. It includes account roles for listeners, creators, and administrators, plus song and album management.
+Quaver is a music library and playlist web application built with Flask and Vue. It includes account roles for listeners, creators, and administrators, plus song and album management.  
+
+Developed as a submission towards my course _Modern Application Development II Project_ under the IITM BS in Data Science and Applications.
+
+This is an improvisation over the initial music application delivered under the _Modern Application Development I Project_, which can be found here: [Quaver (old)](https://github.com/v-samyuktha/quaver)
 
 ## Requirements
 
@@ -63,7 +67,7 @@ npm install
 npm run dev
 ```
 
-Open the local URL printed by Vite (typically `http://localhost:5173`). The frontend expects the API at `http://localhost:5000/api`.
+Open the local URL printed by Vite (by default at `http://localhost:5173`). The frontend expects the API at `http://localhost:5000/api`.
 
 Email reminders are sent through a local SMTP server on port `1025`. To use the scheduled reminder jobs, run a Celery worker and beat scheduler from the repository root in separate terminals:
 
@@ -86,7 +90,3 @@ npm run build
 - Flask, Flask-SQLAlchemy, Flask-Security-Too, and Flask-RESTful
 - Vue 3 and Vite
 - SQLite, Redis, and Celery
-
-## Credits
-
-Developed by Samyuktha for the Modern Application Development II Project course, under the IIT Madras BS in Data Science and Applications.
