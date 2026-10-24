@@ -1,10 +1,17 @@
-/.vscode
-/.venv
-/__pycache__
-/application/__pycache__
-/instance/quaver2_db.sqlite3
-/routes/__pycache__
-/vue-project/.vscode
-/vue-project/src/assets/audio
-/vue-project/src/assets/lyrics
-21f2000061_MAD2_Report.pdf
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# Local application data and generated files
+/instance/
+*.sqlite3
+/celerybeat-schedule
+/21f2000061_MAD2_Report.pdf
+
+/vue-project/src/assets/audio/
+/vue-project/src/assets/lyrics/
+
+# Editors
+/.vscode/
+/vue-project/.vscode/
